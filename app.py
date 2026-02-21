@@ -1,11 +1,27 @@
 import streamlit as st
-import pandas as pd
-import os
+import json
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 st.set_page_config(page_title="GuruMantra IT Career Assistant")
 
 st.title("🎯 GuruMantra IT Career Assistant")
 st.write("Hi 👋 I help students choose the right IT career path.")
+
+# ---------------- GOOGLE SHEETS CONNECTION ----------------
+
+scope = ["https://spreadsheets.google.com/feeds",
+         "https://www.googleapis.com/auth/drive"]
+
+# Convert secret string into dictionary
+creds_dict = json.loads(st.secrets["gcp_service_account"])
+
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(creds)
+
+sheet = client.open("GuruMantra_Leads").sheet1
+
+# ---------------- SESSION STATE ----------------
 
 if "step" not in st.session_state:
     st.session_state.step = 1
@@ -31,7 +47,7 @@ if st.session_state.step == 3:
         st.session_state.coding = coding
         st.session_state.step = 4
 
-# STEP 4 – Career Suggestion
+# STEP 4 – Career Suggestion + Lead Save
 if st.session_state.step == 4:
 
     if st.session_state.coding == "No":
@@ -59,17 +75,12 @@ if st.session_state.step == 4:
 
     if st.button("Submit"):
 
-        new_data = pd.DataFrame({
-            "Name": [name],
-            "Phone": [phone],
-            "Email": [email],
-            "Education": [st.session_state.education],
-            "Coding Interest": [st.session_state.coding]
-        })
-
-        if os.path.exists("leads.csv"):
-            new_data.to_csv("leads.csv", mode='a', header=False, index=False)
-        else:
-            new_data.to_csv("leads.csv", index=False)
+        sheet.append_row([
+            name,
+            phone,
+            email,
+            st.session_state.education,
+            st.session_state.coding
+        ])
 
         st.success("✅ Thank you! Our team will contact you soon 🚀")
