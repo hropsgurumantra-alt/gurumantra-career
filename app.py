@@ -1,5 +1,4 @@
 import streamlit as st
-import json
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 creds_dict = st.secrets["gcp_service_account"]
@@ -13,8 +12,7 @@ st.write("Hi 👋 I help students choose the right IT career path.")
 scope = ["https://spreadsheets.google.com/feeds",
          "https://www.googleapis.com/auth/drive"]
 
-# Convert secret string into dictionary
-creds_dict = json.loads(st.secrets["gcp_service_account"])
+creds_dict = st.secrets["gcp_service_account"]
 
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
@@ -84,5 +82,6 @@ if st.session_state.step == 4:
         ])
 
         st.success("✅ Thank you! Our team will contact you soon 🚀")
+
 
 
