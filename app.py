@@ -72,7 +72,9 @@ if st.session_state.step == 4:
     email = st.text_input("Email")
 
     if st.button("Submit"):
-
+             if not name or not phone or not email:
+        st.error("Please fill all details")
+    else:
         sheet.append_row([
             name,
             phone,
@@ -81,7 +83,11 @@ if st.session_state.step == 4:
             st.session_state.coding
         ])
 
-        st.success("✅ Thank you! Our team will contact you soon 🚀")
+        st.success("✅ Thank you! Your roadmap is ready 🚀")
+
+        st.markdown("### 📥 Download your AI Career Roadmap")
+        st.link_button("Download PDF", "https://drive.google.com/file/d/1q2lrNBkHitLkuhVwq_YtYreYsFKn62LW/view?usp=sharing")
+
 
 
 
