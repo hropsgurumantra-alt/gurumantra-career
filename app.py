@@ -193,8 +193,9 @@ if st.session_state.step == 4:
             st.markdown("### 📥 Download your AI Career Roadmap")
             st.link_button(
                 "Download PDF",
-                "https://drive.google.com/uc?export=download&id=1q2lrNBkHitLkuhVwq_YtYreYsFKn62LW"
+                "https://drive.google.com/uc?export=download&id=1np6FgDYJ0h9NBd6jyOs3YdXmdAfizVG9"
             )
+
 
 
 
