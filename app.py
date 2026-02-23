@@ -67,26 +67,33 @@ if st.session_state.step == 4:
 
     st.write("📩 Enter your details to receive FREE Career Roadmap + Demo Class")
 
+    st.info("🎁 Get your personalised AI roadmap instantly — takes 30 seconds")
+
     name = st.text_input("Your Name")
     phone = st.text_input("Phone Number")
     email = st.text_input("Email")
 
     if st.button("Submit"):
-             if not name or not phone or not email:
-        st.error("Please fill all details")
-    else:
-        sheet.append_row([
-            name,
-            phone,
-            email,
-            st.session_state.education,
-            st.session_state.coding
-        ])
 
-        st.success("✅ Thank you! Your roadmap is ready 🚀")
+        if not name or not phone or not email:
+            st.error("Please fill all details")
 
-        st.markdown("### 📥 Download your AI Career Roadmap")
-        st.link_button("Download PDF", "https://drive.google.com/file/d/1q2lrNBkHitLkuhVwq_YtYreYsFKn62LW/view?usp=sharing")
+        else:
+            sheet.append_row([
+                name,
+                phone,
+                email,
+                st.session_state.education,
+                st.session_state.coding
+            ])
+
+            st.success("✅ Your roadmap is ready 🚀")
+
+            st.markdown("### 📥 Download your AI Career Roadmap")
+            st.link_button(
+                "Download PDF",
+                "https://drive.google.com/uc?export=download&id=1q2lrNBkHitLkuhVwq_YtYreYsFKn62LW"
+            )
 
 
 
