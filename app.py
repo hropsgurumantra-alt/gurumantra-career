@@ -48,7 +48,9 @@ if st.session_state.step == 3:
 # STEP 4 – Career Suggestion + Lead Save
 if st.session_state.step == 4:
 
+    # ---------- Recommendation ----------
     if st.session_state.coding == "No":
+
         st.success("""
         🎯 Recommended Careers:
         ✔ Software Testing
@@ -56,7 +58,19 @@ if st.session_state.step == 4:
         ✔ Salesforce Admin
         ✔ Business Analyst
         """)
+
+    elif st.session_state.coding == "Not Sure":
+
+        st.info("""
+        🎯 You are exploring — good starting paths:
+        ✔ Data Analyst
+        ✔ QA Testing
+        ✔ Low Code / No Code
+        ✔ Tech Support
+        """)
+
     else:
+
         st.success("""
         🎯 Recommended Careers:
         ✔ Python Developer
@@ -65,6 +79,7 @@ if st.session_state.step == 4:
         ✔ Full Stack Developer
         """)
 
+    # ---------- Lead intro ----------
     st.write("📩 Enter your details to receive FREE Career Roadmap + Demo Class")
     st.info("🎁 Get your personalised AI roadmap instantly — takes 30 seconds")
 
@@ -96,6 +111,51 @@ if st.session_state.step == 4:
 
         st.session_state.score = score
         st.success(f"🎯 Suitability Score: {score}%")
+
+    # ---------- Human AI Advisor ----------
+    score = st.session_state.get("score", 50)
+    coding_interest = st.session_state.get("coding", "Not Sure")
+
+    python_weight = 0
+    data_weight = 0
+    testing_weight = 0
+
+    if coding_interest == "Yes":
+        python_weight += 40
+    elif coding_interest == "Not Sure":
+        data_weight += 20
+        testing_weight += 20
+    else:
+        testing_weight += 40
+
+    if score >= 70:
+        python_weight += 30
+        data_weight += 20
+    elif score >= 40:
+        data_weight += 20
+        testing_weight += 10
+    else:
+        testing_weight += 30
+
+    paths = {
+        "Python Developer": python_weight,
+        "Data Analyst": data_weight,
+        "Software Testing": testing_weight
+    }
+
+    best_path = max(paths, key=paths.get)
+
+    st.markdown("## 🧠 AI Career Advisor Analysis")
+
+    if best_path == "Python Developer":
+        explanation = "You show strong curiosity and learning drive — development suits you."
+    elif best_path == "Data Analyst":
+        explanation = "You appear analytical and thoughtful — data roles fit your mindset."
+    else:
+        explanation = "You prefer structured environments — stable tech roles suit you."
+
+    st.success(f"🎯 Recommended Path: {best_path}")
+    st.write(explanation)
 
     # ---------- Lead form ----------
     name = st.text_input("Your Name")
